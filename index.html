@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amazon Vine Multi-Search</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 1rem;
+      background: #f9f9f9;
+    }
+    h1 {
+      font-size: 1.4rem;
+      text-align: center;
+    }
+    .search-form {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+    }
+    input, button {
+      padding: 0.5rem;
+      margin: 0.25rem 0;
+      font-size: 1rem;
+    }
+    .results iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Amazon Vine Keyword Search (Newest)</h1>
+
+  <div class="search-form">
+    <label for="keywords">Enter keywords (one per line):</label>
+    <textarea id="keywords" rows="4" placeholder="e.g., kids\nbaby\ntoddler"></textarea>
+    <button onclick="generateSearches()">Search Vine</button>
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <script>
+    function generateSearches() {
+      const keywords = document.getElementById('keywords').value.trim().split(/\n+/);
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = '';
+
+      keywords.forEach(keyword => {
+        const query = encodeURIComponent(keyword);
+        const url = `https://www.amazon.com/vine/reviewers/search?sort=DATE_DESC&keywords=${query}`;
+
+        const section = document.createElement('div');
+        const heading = document.createElement('h2');
+        heading.textContent = `Results for: ${keyword}`;
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+
+        section.appendChild(heading);
+        section.appendChild(iframe);
+        resultsDiv.appendChild(section);
+      });
+    }
+  </script>
+</body>
+</html>
+
