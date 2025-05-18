@@ -20,16 +20,28 @@
       flex-direction: column;
       margin-bottom: 1rem;
     }
-    input, button {
+    textarea, button {
       padding: 0.5rem;
       margin: 0.25rem 0;
       font-size: 1rem;
     }
-    .results iframe {
-      width: 100%;
-      height: 500px;
-      border: none;
-      margin-bottom: 1.5rem;
+    .results {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .result-block {
+      background: white;
+      padding: 0.75rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    a {
+      color: #0077cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -39,13 +51,13 @@
   <div class="search-form">
     <label for="keywords">Enter keywords (one per line):</label>
     <textarea id="keywords" rows="4" placeholder="e.g., kids\nbaby\ntoddler"></textarea>
-    <button onclick="generateSearches()">Search Vine</button>
+    <button onclick="generateLinks()">Search Vine</button>
   </div>
 
   <div class="results" id="results"></div>
 
   <script>
-    function generateSearches() {
+    function generateLinks() {
       const keywords = document.getElementById('keywords').value.trim().split(/\n+/);
       const resultsDiv = document.getElementById('results');
       resultsDiv.innerHTML = '';
@@ -55,17 +67,21 @@
         const url = `https://www.amazon.com/vine/reviewers/search?sort=DATE_DESC&keywords=${query}`;
 
         const section = document.createElement('div');
+        section.className = 'result-block';
+
         const heading = document.createElement('h2');
         heading.textContent = `Results for: ${keyword}`;
-        const iframe = document.createElement('iframe');
-        iframe.src = url;
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank';
+        link.textContent = 'Open Search on Amazon Vine';
 
         section.appendChild(heading);
-        section.appendChild(iframe);
+        section.appendChild(link);
         resultsDiv.appendChild(section);
       });
     }
   </script>
 </body>
 </html>
-
